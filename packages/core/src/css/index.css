@@ -1,0 +1,34 @@
+@import './accent1.css';
+@import './accent2.css';
+@import './neutral.css';
+@import './error.css';
+@import './warn.css';
+@import './success.css';
+@import './info.css';
+
+@import './other.css';
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  @apply h-full w-full overflow-auto transition-colors duration-300;
+}
+
+body {
+  @apply bg-primary text-primary-on z-0 h-full w-full overflow-auto transition-all duration-300;
+
+  font-size: clamp(1rem, -0.875rem + 7.5vw, 3.5rem);
+}
+
+* {
+  @apply appearance-none outline-none;
+
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}

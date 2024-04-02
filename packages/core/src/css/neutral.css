@@ -1,0 +1,85 @@
+:root {
+  --neutral-primary: var(--neutral-98);
+  --neutral-primary-hover: var(--neutral-95);
+  --neutral-on-primary: var(--neutral-4);
+
+  --neutral-secondary: var(--neutral-92);
+  --neutral-secondary-hover: var(--neutral-89);
+  --neutral-on-secondary: var(--neutral-10);
+
+  --neutral-tertiary: var(--neutral-86);
+  --neutral-tertiary-hover: var(--neutral-83);
+  --neutral-on-tertiary: var(--neutral-15);
+
+  --neutral-bright: var(--neutral-50);
+  --neutral-bright-hover: var(--neutral-40);
+  --neutral-on-bright: var(--neutral-98);
+
+  --neutral-border: var(--neutral-95);
+  --neutral-border-hover: var(--neutral-92);
+}
+
+.dark {
+  --neutral-primary: var(--neutral-4);
+  --neutral-primary-hover: var(--neutral-7);
+  --neutral-on-primary: var(--neutral-98);
+
+  --neutral-secondary: var(--neutral-10);
+  --neutral-secondary-hover: var(--neutral-13);
+  --neutral-on-secondary: var(--neutral-92);
+
+  --neutral-tertiary: var(--neutral-15);
+  --neutral-tertiary-hover: var(--neutral-18);
+  --neutral-on-tertiary: var(--neutral-86);
+
+  --neutral-bright: var(--neutral-40);
+  --neutral-bright-hover: var(--neutral-50);
+  --neutral-on-bright: var(--neutral-98);
+
+  --neutral-border: var(--neutral-7);
+  --neutral-border-hover: var(--neutral-13);
+}
+
+[color='neutral'] {
+  accent-color: var(--neutral-50);
+
+  --primary: var(--neutral-primary);
+  --primary-hover: var(--neutral-primary-hover);
+  --on-primary: var(--neutral-on-primary);
+
+  --secondary: var(--neutral-secondary);
+  --secondary-hover: var(--neutral-secondary-hover);
+  --on-secondary: var(--neutral-on-secondary);
+
+  --tertiary: var(--neutral-tertiary);
+  --tertiary-hover: var(--neutral-tertiary-hover);
+  --on-tertiary: var(--neutral-on-tertiary);
+
+  --bright: var(--neutral-bright);
+  --bright-hover: var(--neutral-bright-hover);
+  --on-bright: var(--neutral-on-bright);
+
+  --border: var(--neutral-border);
+  --border-hover: var(--neutral-border-hover);
+}
+
+.dark [color='neutral'] {
+  --primary: var(--neutral-4);
+  --primary-hover: var(--neutral-7);
+  --on-primary: var(--neutral-98);
+
+  --secondary: var(--neutral-10);
+  --secondary-hover: var(--neutral-13);
+  --on-secondary: var(--neutral-92);
+
+  --tertiary: var(--neutral-15);
+  --tertiary-hover: var(--neutral-18);
+  --on-tertiary: var(--neutral-86);
+
+  --bright: var(--neutral-40);
+  --bright-hover: var(--neutral-50);
+  --on-bright: var(--neutral-98);
+
+  --border: var(--neutral-7);
+  --border-hover: var(--neutral-13);
+}

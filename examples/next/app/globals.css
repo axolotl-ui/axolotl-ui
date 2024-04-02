@@ -1,0 +1,5 @@
+@import '@axolotl-ui/core';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

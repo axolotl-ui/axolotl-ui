@@ -1,0 +1,55 @@
+{
+  "name": "@axolotl-ui/components",
+  "version": "0.1.0",
+  "description": "AxolotlUI components",
+  "author": "budchirp <budchirp@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json"
+  ],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axolotl-ui/axolotl-ui.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/axolotl-ui/axolotl-ui/issues"
+  },
+  "scripts": {
+    "build": "tsup src/*",
+    "dev": "tsup src/* --watch"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@axolotl-ui/core": "workspace:*",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "framer-motion": "latest",
+    "lucide-react": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
+}

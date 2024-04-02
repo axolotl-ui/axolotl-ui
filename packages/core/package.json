@@ -1,0 +1,58 @@
+{
+  "name": "@axolotl-ui/core",
+  "version": "0.1.0",
+  "description": "Core of the AxolotlUI",
+  "author": "budchirp <budchirp@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json"
+  ],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "style": "./dist/css/index.css",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axolotl-ui/axolotl-ui.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/axolotl-ui/axolotl-ui/issues"
+  },
+  "scripts": {
+    "build": "tsup src/*",
+    "dev": "tsup src/* --watch"
+  },
+  "peerDependencies": {
+    "next": ">=13",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "tailwindcss": "*"
+  },
+  "dependencies": {
+    "@axolotl-ui/components": "link:../components",
+    "cva": "1.0.0-beta.1",
+    "next-themes": "latest",
+    "tailwind-merge": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
+}

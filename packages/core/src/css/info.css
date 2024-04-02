@@ -1,0 +1,85 @@
+:root {
+  --info-primary: var(--info-98);
+  --info-primary-hover: var(--info-95);
+  --info-on-primary: var(--info-4);
+
+  --info-secondary: var(--info-92);
+  --info-secondary-hover: var(--info-89);
+  --info-on-secondary: var(--info-10);
+
+  --info-tertiary: var(--info-86);
+  --info-tertiary-hover: var(--info-83);
+  --info-on-tertiary: var(--info-15);
+
+  --info-bright: var(--info-50);
+  --info-bright-hover: var(--info-40);
+  --info-on-bright: var(--info-98);
+
+  --info-border: var(--info-95);
+  --info-border-hover: var(--info-92);
+}
+
+.dark {
+  --info-primary: var(--info-4);
+  --info-primary-hover: var(--info-7);
+  --info-on-primary: var(--info-98);
+
+  --info-secondary: var(--info-10);
+  --info-secondary-hover: var(--info-13);
+  --info-on-secondary: var(--info-92);
+
+  --info-tertiary: var(--info-15);
+  --info-tertiary-hover: var(--info-18);
+  --info-on-tertiary: var(--info-86);
+
+  --info-bright: var(--info-40);
+  --info-bright-hover: var(--info-50);
+  --info-on-bright: var(--info-98);
+
+  --info-border: var(--info-7);
+  --info-border-hover: var(--info-13);
+}
+
+[color='info'] {
+  accent-color: var(--info-50);
+
+  --primary: var(--info-primary);
+  --primary-hover: var(--info-primary-hover);
+  --on-primary: var(--info-on-primary);
+
+  --secondary: var(--info-secondary);
+  --secondary-hover: var(--info-secondary-hover);
+  --on-secondary: var(--info-on-secondary);
+
+  --tertiary: var(--info-tertiary);
+  --tertiary-hover: var(--info-tertiary-hover);
+  --on-tertiary: var(--info-on-tertiary);
+
+  --bright: var(--info-bright);
+  --bright-hover: var(--info-bright-hover);
+  --on-bright: var(--info-on-bright);
+
+  --border: var(--info-border);
+  --border-hover: var(--info-border-hover);
+}
+
+.dark [color='info'] {
+  --primary: var(--info-4);
+  --primary-hover: var(--info-7);
+  --on-primary: var(--info-98);
+
+  --secondary: var(--info-10);
+  --secondary-hover: var(--info-13);
+  --on-secondary: var(--info-92);
+
+  --tertiary: var(--info-15);
+  --tertiary-hover: var(--info-18);
+  --on-tertiary: var(--info-86);
+
+  --bright: var(--info-40);
+  --bright-hover: var(--info-50);
+  --on-bright: var(--info-98);
+
+  --border: var(--info-7);
+  --border-hover: var(--info-13);
+}

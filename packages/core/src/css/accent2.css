@@ -1,0 +1,85 @@
+:root {
+  --accent2-primary: var(--accent2-98);
+  --accent2-primary-hover: var(--accent2-95);
+  --accent2-on-primary: var(--accent2-4);
+
+  --accent2-secondary: var(--accent2-92);
+  --accent2-secondary-hover: var(--accent2-89);
+  --accent2-on-secondary: var(--accent2-10);
+
+  --accent2-tertiary: var(--accent2-86);
+  --accent2-tertiary-hover: var(--accent2-83);
+  --accent2-on-tertiary: var(--accent2-15);
+
+  --accent2-bright: var(--accent2-50);
+  --accent2-bright-hover: var(--accent2-40);
+  --accent2-on-bright: var(--accent2-98);
+
+  --accent2-border: var(--accent2-95);
+  --accent2-border-hover: var(--accent2-92);
+}
+
+.dark {
+  --accent2-primary: var(--accent2-4);
+  --accent2-primary-hover: var(--accent2-7);
+  --accent2-on-primary: var(--accent2-98);
+
+  --accent2-secondary: var(--accent2-10);
+  --accent2-secondary-hover: var(--accent2-13);
+  --accent2-on-secondary: var(--accent2-92);
+
+  --accent2-tertiary: var(--accent2-15);
+  --accent2-tertiary-hover: var(--accent2-18);
+  --accent2-on-tertiary: var(--accent2-86);
+
+  --accent2-bright: var(--accent2-40);
+  --accent2-bright-hover: var(--accent2-50);
+  --accent2-on-bright: var(--accent2-98);
+
+  --accent2-border: var(--accent2-7);
+  --accent2-border-hover: var(--accent2-13);
+}
+
+[color='accent2'] {
+  accent-color: var(--accent2-50);
+
+  --primary: var(--accent2-primary);
+  --primary-hover: var(--accent2-primary-hover);
+  --on-primary: var(--accent2-on-primary);
+
+  --secondary: var(--accent2-secondary);
+  --secondary-hover: var(--accent2-secondary-hover);
+  --on-secondary: var(--accent2-on-secondary);
+
+  --tertiary: var(--accent2-tertiary);
+  --tertiary-hover: var(--accent2-tertiary-hover);
+  --on-tertiary: var(--accent2-on-tertiary);
+
+  --bright: var(--accent2-bright);
+  --bright-hover: var(--accent2-bright-hover);
+  --on-bright: var(--accent2-on-bright);
+
+  --border: var(--accent2-border);
+  --border-hover: var(--accent2-border-hover);
+}
+
+.dark [color='accent2'] {
+  --primary: var(--accent2-4);
+  --primary-hover: var(--accent2-7);
+  --on-primary: var(--accent2-98);
+
+  --secondary: var(--accent2-10);
+  --secondary-hover: var(--accent2-13);
+  --on-secondary: var(--accent2-92);
+
+  --tertiary: var(--accent2-15);
+  --tertiary-hover: var(--accent2-18);
+  --on-tertiary: var(--accent2-86);
+
+  --bright: var(--accent2-40);
+  --bright-hover: var(--accent2-50);
+  --on-bright: var(--accent2-98);
+
+  --border: var(--accent2-7);
+  --border-hover: var(--accent2-13);
+}

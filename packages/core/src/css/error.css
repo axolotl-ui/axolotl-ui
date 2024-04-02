@@ -1,0 +1,85 @@
+:root {
+  --error-primary: var(--error-98);
+  --error-primary-hover: var(--error-95);
+  --error-on-primary: var(--error-4);
+
+  --error-secondary: var(--error-92);
+  --error-secondary-hover: var(--error-89);
+  --error-on-secondary: var(--error-10);
+
+  --error-tertiary: var(--error-86);
+  --error-tertiary-hover: var(--error-83);
+  --error-on-tertiary: var(--error-15);
+
+  --error-bright: var(--error-50);
+  --error-bright-hover: var(--error-40);
+  --error-on-bright: var(--error-98);
+
+  --error-border: var(--error-95);
+  --error-border-hover: var(--error-92);
+}
+
+.dark {
+  --error-primary: var(--error-4);
+  --error-primary-hover: var(--error-7);
+  --error-on-primary: var(--error-98);
+
+  --error-secondary: var(--error-10);
+  --error-secondary-hover: var(--error-13);
+  --error-on-secondary: var(--error-92);
+
+  --error-tertiary: var(--error-15);
+  --error-tertiary-hover: var(--error-18);
+  --error-on-tertiary: var(--error-86);
+
+  --error-bright: var(--error-40);
+  --error-bright-hover: var(--error-50);
+  --error-on-bright: var(--error-98);
+
+  --error-border: var(--error-7);
+  --error-border-hover: var(--error-13);
+}
+
+[color='error'] {
+  accent-color: var(--error-50);
+
+  --primary: var(--error-primary);
+  --primary-hover: var(--error-primary-hover);
+  --on-primary: var(--error-on-primary);
+
+  --secondary: var(--error-secondary);
+  --secondary-hover: var(--error-secondary-hover);
+  --on-secondary: var(--error-on-secondary);
+
+  --tertiary: var(--error-tertiary);
+  --tertiary-hover: var(--error-tertiary-hover);
+  --on-tertiary: var(--error-on-tertiary);
+
+  --bright: var(--error-bright);
+  --bright-hover: var(--error-bright-hover);
+  --on-bright: var(--error-on-bright);
+
+  --border: var(--error-border);
+  --border-hover: var(--error-border-hover);
+}
+
+.dark [color='error'] {
+  --primary: var(--error-4);
+  --primary-hover: var(--error-7);
+  --on-primary: var(--error-98);
+
+  --secondary: var(--error-10);
+  --secondary-hover: var(--error-13);
+  --on-secondary: var(--error-92);
+
+  --tertiary: var(--error-15);
+  --tertiary-hover: var(--error-18);
+  --on-tertiary: var(--error-86);
+
+  --bright: var(--error-40);
+  --bright-hover: var(--error-50);
+  --on-bright: var(--error-98);
+
+  --border: var(--error-7);
+  --border-hover: var(--error-13);
+}
