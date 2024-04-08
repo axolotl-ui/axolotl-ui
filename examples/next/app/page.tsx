@@ -3,29 +3,29 @@
 import React, { useState } from 'react'
 
 import {
-  Button,
-  Tag,
-  Link,
-  Input,
   Badge,
-  Toggle,
-  Heading,
-  Container,
-  Text,
   Box,
-  Textarea,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  Separator,
-  Label,
-  Checkbox,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Button,
+  Checkbox,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  Heading,
+  Input,
+  Label,
+  Link,
+  Separator,
+  Tag,
+  Text,
+  Textarea,
+  Toggle
 } from '@axolotl-ui/components'
-import NextLink from 'next/link'
 import { HEX, useOptions } from '@axolotl-ui/core'
 import { User } from 'lucide-react'
+import NextLink from 'next/link'
 
 const Page: React.FC = (): React.ReactNode => {
   const [color, setColor] = useState('#000000')

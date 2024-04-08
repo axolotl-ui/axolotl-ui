@@ -14,7 +14,7 @@ import { ChevronRight } from 'lucide-react'
 
 import type { BreadcrumbItemProps, BreadcrumbProps, BreadcrumbRef } from '@/breadcrumb/types'
 
-export const Breadcrumb = forwardRef(
+export const Breadcrumb = forwardRef<BreadcrumbRef, BreadcrumbProps>(
   (opts: BreadcrumbProps, ref: Ref<BreadcrumbRef>): ReactNode => {
     const { options } = useOptions()
 

@@ -6,6 +6,5 @@ export * from '@/providers'
 export * from '@/utils'
 
 export * from '@/axolotl-ui'
-export * from '@/tailwind'
 
 export * from '@/types'

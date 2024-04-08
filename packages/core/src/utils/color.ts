@@ -1,4 +1,4 @@
-import type { HEX, RGB, HSL, LightnessLevel, Shades, ColorNames } from '@/types/color'
+import type { ColorNames, HEX, HSL, LightnessLevel, RGB, Shades } from '@/types/color'
 import type { ThemeColors } from '@/types/options'
 import type { Optional } from '@/types/other'
 
@@ -131,28 +131,28 @@ type ColorsHSl = {
 export const generateColorVariants = (colors: ThemeColors): Shades => {
   const colorsHSL: Partial<ColorsHSl> = {}
 
-    ; (Object.keys(colors) as Array<ColorNames>).map((colorName: ColorNames) => {
-      colorsHSL[colorName] = HEXToHSL(colors[colorName])
-    })
+  ;(Object.keys(colors) as Array<ColorNames>).map((colorName: ColorNames) => {
+    colorsHSL[colorName] = HEXToHSL(colors[colorName])
+  })
 
   const shades: Optional<Shades> = {}
 
-    ; (Object.keys(colorsHSL as ColorsHSl) as Array<ColorNames>).map((colorName: ColorNames) => {
-      const color: HSL = (colorsHSL as ColorsHSl)[colorName]
+  ;(Object.keys(colorsHSL as ColorsHSl) as Array<ColorNames>).map((colorName: ColorNames) => {
+    const color: HSL = (colorsHSL as ColorsHSl)[colorName]
 
-      lightnessLevels.map((lightness: LightnessLevel) => {
-        // TYPESCRIPT YOU ARE FUCKING STUPID
-        if (!shades[colorName]) {
-          shades[colorName] = {}
-        }
+    lightnessLevels.map((lightness: LightnessLevel) => {
+      // TYPESCRIPT YOU ARE FUCKING STUPID
+      if (!shades[colorName]) {
+        shades[colorName] = {}
+      }
 
-        // @ts-expect-error fuck you
-        shades[colorName][lightness] = HSLToHEX({
-          ...color,
-          lightness
-        })
+      // @ts-expect-error fuck you
+      shades[colorName][lightness] = HSLToHEX({
+        ...color,
+        lightness
       })
     })
+  })
 
   return shades as Shades
 }

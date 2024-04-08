@@ -1,36 +1,38 @@
 'use client'
 
-import React, { type ElementType, type ReactNode } from 'react'
+import { forwardRef, type ReactNode, type Ref } from 'react'
 
-import { useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 import { inputStyles } from '@/input/input'
+import { useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
-import type { TextareaProps } from '@/textarea/types'
+import type { TextareaProps, TextareaRef } from '@/textarea/types'
 
 export type TextareaStyles = VariantProps<typeof textareaStyles>
 
 export const textareaStyles = inputStyles
 
-export const Textarea = <T extends ElementType = 'textarea'>(opts: TextareaProps<T>): ReactNode => {
-  const { options } = useOptions()
+export const Textarea = forwardRef<TextareaRef, TextareaProps>(
+  (opts: TextareaProps, ref: Ref<TextareaRef>): ReactNode => {
+    const { options } = useOptions()
 
-  const { all, Textarea }: Components = options.extend.components
+    const { all, Textarea }: Components = options.extend.components
 
-  const {
-    component: Component = 'textarea',
-    className,
-    color = 'accent1',
-    ...props
-  }: TextareaProps<T> = { ...all, ...Textarea, ...opts }
+    const {
+      className,
+      color = 'accent1',
+      ...restOpts
+    }: TextareaProps = { ...all, ...Textarea, ...opts }
 
-  return (
-    <Component
-      {...props}
-      color={color}
-      className={textareaStyles({
+    const props: TextareaProps = {
+      ...restOpts,
+      ref,
+      color,
+      className: textareaStyles({
         className: ['h-auto px-4 py-2', all?.className, Textarea?.className, className]
-      })}
-    />
-  )
-}
+      })
+    }
+
+    return <textarea {...props} />
+  }
+)
 Textarea.displayName = 'Textarea'

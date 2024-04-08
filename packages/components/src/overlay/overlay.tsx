@@ -1,12 +1,11 @@
 'use client'
 
-import React, { type ReactNode } from 'react'
+import { forwardRef, type ReactNode, type Ref } from 'react'
 
 import { cx, useOptions, type Components } from '@axolotl-ui/core'
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
 
-import type { OverlayProps } from '@/overlay/types'
-import { createPortal } from 'react-dom'
+import type { OverlayProps, OverlayRef } from '@/overlay/types'
 
 const overlayAnimationVariants: Variants = {
   open: {
@@ -27,50 +26,52 @@ const overlayAnimationVariants: Variants = {
   }
 }
 
-export const Overlay = (opts: OverlayProps): ReactNode => {
-  const { options } = useOptions()
+export const Overlay = forwardRef<OverlayRef, OverlayProps>(
+  (opts: OverlayProps, ref: Ref<OverlayRef>): ReactNode => {
+    const { options } = useOptions()
 
-  const { all, Overlay }: Components = options.extend.components
+    const { all, Overlay }: Components = options.extend.components
 
-  const {
-    children,
-    className,
-    color = 'info',
-    open,
-    onOpenChange,
-    ...props
-  }: OverlayProps = { ...all, ...Overlay, ...opts }
+    const {
+      children,
+      className,
+      color = 'info',
+      onClick,
+      open,
+      setOpen,
+      ...restOpts
+    }: OverlayProps = { ...all, ...Overlay, ...opts }
 
-  return (
-    <AnimatePresence mode="wait">
-      {open &&
-        createPortal(
-          <motion.div
-            {...props}
-            onClick={() => {
-              onOpenChange(false)
-            }}
-            color={color}
-            variants={overlayAnimationVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className={cx(
-              'bg-black/50',
-              'fixed',
-              'z-10',
-              'h-screen w-screen',
-              all?.className,
-              Overlay?.className,
-              className
-            )}
-            key={Math.random()}
-          >
-            {children}
-          </motion.div>,
-          document.body
-        )}
-    </AnimatePresence>
-  )
-}
+    const props: Omit<OverlayProps, 'open' | 'setOpen'> = {
+      ...restOpts,
+      ref,
+      color,
+      variants: overlayAnimationVariants,
+      initial: 'closed',
+      animate: 'open',
+      exit: 'closed',
+      key: Math.random(),
+      onClick: (e) => {
+        setOpen(false)
+
+        onClick?.(e)
+      },
+      className: cx(
+        'bg-black/50',
+        'fixed',
+        'z-10',
+        'h-screen w-screen',
+        all?.className,
+        Overlay?.className,
+        className
+      )
+    }
+
+    return (
+      <AnimatePresence mode="wait">
+        {open && <motion.div {...props}>{children}</motion.div>}
+      </AnimatePresence>
+    )
+  }
+)
 Overlay.displayName = 'Overlay'

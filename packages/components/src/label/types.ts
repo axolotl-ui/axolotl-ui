@@ -1,14 +1,14 @@
-import type { ComponentProps, ElementType, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { LabelStyles } from '@/label/label'
+import type { GlobalProps } from '@/types'
 
-export type LabelProps<T extends ElementType = 'label'> = {
-  component?: T
+export type LabelRef = HTMLLabelElement
+export type LabelProps = {
   children?: ReactNode
+  asChild?: boolean
 } & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
+  ComponentProps<'label'> &
   LabelStyles
 
 declare module '@axolotl-ui/core' {

@@ -1,14 +1,14 @@
-import type { ComponentProps, ElementType, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { TagStyles } from '@/tag/tag'
+import type { GlobalProps } from '@/types'
 
-export type TagProps<T extends ElementType = 'span'> = {
-  component?: T
+export type TagRef = HTMLSpanElement
+export type TagProps = {
   children?: ReactNode
+  asChild?: boolean
 } & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
+  ComponentProps<'span'> &
   TagStyles
 
 declare module '@axolotl-ui/core' {

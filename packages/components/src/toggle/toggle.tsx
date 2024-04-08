@@ -1,11 +1,11 @@
 'use client'
 
-import React, { type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps, cx } from '@axolotl-ui/core'
 import { Label } from '@/label/label'
+import { cva, cx, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
-import type { ToggleProps } from '@/toggle/types'
+import type { ToggleLabelProps, ToggleProps } from '@/toggle/types'
 
 export type ToggleStyles = VariantProps<typeof toggleStyles>
 export type ToggleHandleStyles = VariantProps<typeof toggleHandleStyles>
@@ -42,61 +42,84 @@ export const Toggle = (opts: ToggleProps): ReactNode => {
   const { all, Toggle }: Components = options.extend.components
 
   const {
-    labelProps,
-    handleProps,
+    labelProps: labelOpts,
+    handleProps: handleOpts,
+
     label,
-    checked,
+    on: controlledOn,
+    setOn: setControlledOn,
+    onChange,
     className,
     color = 'accent1',
-    ...props
+    ...restOpts
   }: ToggleProps = {
     ...all,
     ...Toggle,
     ...opts
   }
 
-  const { color: labelColor = color, ..._labelProps } = {
+  const { color: labelColor = color, ...restLabelProps } = {
     ...all,
     ...Toggle?.labelProps,
-    ...labelProps
+    ...labelOpts
   }
 
-  const { color: handleColor = color, ..._handleProps } = {
+  const { color: handleColor = color, ...restHandleProps } = {
     ...all,
     ...Toggle?.handleProps,
-    ...handleProps
+    ...handleOpts
+  }
+
+  const [uncontrolledOn, setUncontrolledOn] = useState<boolean>(false)
+
+  const on = controlledOn ?? uncontrolledOn
+  const setOn = setControlledOn ?? setUncontrolledOn
+
+  const props: ToggleProps = {
+    ...restOpts,
+    checked: on,
+    onChange: (e) => {
+      setOn(!on)
+
+      onChange?.(e)
+    },
+    type: 'checkbox',
+    className: 'sr-only'
+  }
+
+  const labelProps: ToggleLabelProps = {
+    ...restLabelProps,
+    color: labelColor,
+    className: cx(
+      'flex w-fit items-center gap-2',
+      all?.className,
+      Toggle?.labelProps?.className,
+      labelOpts?.className
+    )
+  }
+
+  const handleProps: ToggleHandleStyles = {
+    ...restHandleProps,
+    color: handleColor,
+    className: toggleHandleStyles({
+      on,
+      className: [all?.className, Toggle?.handleProps?.className, handleOpts?.className]
+    })
   }
 
   return (
-    <Label
-      {..._labelProps}
-      color={labelColor}
-      className={cx(
-        'flex w-fit items-center gap-2',
-        all?.className,
-        Toggle?.labelProps?.className,
-        labelProps?.className
-      )}
-    >
-      <input {...props} checked={checked} type="checkbox" className="sr-only" />
+    <Label {...labelProps}>
+      <input {...props} />
 
       <div
         {...props}
         color={color}
         className={toggleStyles({
-          on: checked,
+          on,
           className: [all?.className, Toggle?.className, className]
         })}
       >
-        {checked}
-        <div
-          {..._handleProps}
-          color={handleColor}
-          className={toggleHandleStyles({
-            on: checked,
-            className: [all?.className, Toggle?.handleProps?.className, handleProps?.className]
-          })}
-        />
+        <div {...(handleProps as any)} />
       </div>
 
       {label}

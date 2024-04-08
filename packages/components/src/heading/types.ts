@@ -1,14 +1,14 @@
-import type { ComponentProps, ElementType, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { HeadingStyles } from '@/heading/heading'
+import type { GlobalProps } from '@/types'
 
-export type HeadingProps<T extends ElementType = 'h2'> = {
-  component?: T
+export type HeadingRef = HTMLHeadingElement
+export type HeadingProps = {
   children?: ReactNode
+  asChild?: boolean
 } & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
+  ComponentProps<'h1'> &
   HeadingStyles
 
 declare module '@axolotl-ui/core' {

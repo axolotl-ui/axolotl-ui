@@ -1,6 +1,6 @@
 'use client'
 
-import React, {
+import {
   Children,
   cloneElement,
   forwardRef,
@@ -9,7 +9,7 @@ import React, {
   type Ref
 } from 'react'
 
-import { useOptions, cva, type Components, type VariantProps } from '@axolotl-ui/core'
+import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 import { LoaderCircle } from 'lucide-react'
 
 import type { ButtonProps, ButtonRef } from '@/button/types'

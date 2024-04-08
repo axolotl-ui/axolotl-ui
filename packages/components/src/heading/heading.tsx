@@ -1,10 +1,18 @@
 'use client'
 
-import React, { type ElementType, type ReactNode } from 'react'
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+  type Ref
+} from 'react'
 
 import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
-import type { HeadingProps } from '@/heading/types'
+import type { HeadingProps, HeadingRef } from '@/heading/types'
 
 export type HeadingStyles = VariantProps<typeof headingStyles>
 
@@ -30,33 +38,56 @@ export const headingStyles = cva({
   }
 })
 
-export const Heading = <T extends ElementType = 'h2'>(opts: HeadingProps<T>): ReactNode => {
-  const { options } = useOptions()
+export const Heading = forwardRef<HeadingRef, HeadingProps>(
+  (opts: HeadingProps, ref: Ref<HeadingRef>): ReactNode => {
+    const { options } = useOptions()
 
-  const { all, Heading }: Components = options.extend.components
+    const { all, Heading }: Components = options.extend.components
 
-  const {
-    component: Component = opts.variant || 'h2',
-    children,
-    className,
-    color = 'accent1',
-    variant,
-    separator,
-    ...props
-  }: HeadingProps<T> = { ...all, ...Heading, ...opts }
+    const {
+      children,
+      asChild,
+      className,
+      color = 'accent1',
+      variant,
+      separator,
+      ...restOpts
+    }: HeadingProps = { ...all, ...Heading, ...opts }
 
-  return (
-    <Component
-      {...props}
-      color={color}
-      className={headingStyles({
+    const props: HeadingProps = {
+      ...restOpts,
+      ref,
+      children,
+      color,
+      className: headingStyles({
         variant,
         separator,
         className: [all?.className, Heading?.className, className]
-      })}
-    >
-      {children}
-    </Component>
-  )
-}
+      })
+    }
+
+    if (children && asChild) {
+      if (!isValidElement(children)) {
+        throw new Error('Invalid children on Heading!')
+      }
+
+      if (Children.count(children) > 1) {
+        console.warn(
+          'More than one children on Heading when `asChild` is true! Selecting the first one.'
+        )
+      }
+
+      const _children: ReactElement = (
+        Children.count(children) > 1 ? Children.toArray(children)[0] : children
+      ) as ReactElement
+
+      return cloneElement(_children, {
+        ...props,
+        ..._children.props
+      })
+    }
+
+    return <h1 {...props}>{children}</h1>
+  }
+)
 Heading.displayName = 'Heading'

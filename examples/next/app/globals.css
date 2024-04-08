@@ -1,5 +1,8 @@
+@import "tailwindcss";
+
 @import '@axolotl-ui/core';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+    --font-family-main: var(--font-main)
+    --default-font-family: var(--font-family-main)
+}

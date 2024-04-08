@@ -1,5 +1,5 @@
-import { lightnessLevels } from '@/utils/color'
 import type { ThemeColors } from '@/types/options'
+import { lightnessLevels } from '@/utils/color'
 
 export type RGB = {
   red: number

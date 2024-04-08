@@ -1,16 +1,6 @@
 'use client'
 
-import {
-  Button,
-  Checkbox,
-  Container,
-  Heading,
-  Input,
-  Label,
-  Link,
-  Separator,
-  Text
-} from '@axolotl-ui/components'
+import { Button, Container, Heading, Input, Link, Separator, Text } from '@axolotl-ui/components'
 
 const Page: React.FC = (): React.ReactNode => {
   return (

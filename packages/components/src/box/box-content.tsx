@@ -14,7 +14,7 @@ import { cx, useOptions, type Components } from '@axolotl-ui/core'
 
 import type { BoxContentProps, BoxContentRef } from '@/box/types'
 
-export const BoxContent = forwardRef(
+export const BoxContent = forwardRef<BoxContentRef, BoxContentProps>(
   (opts: BoxContentProps, ref: Ref<BoxContentRef>): ReactNode => {
     const { options } = useOptions()
 
@@ -37,12 +37,12 @@ export const BoxContent = forwardRef(
 
     if (children && asChild) {
       if (!isValidElement(children)) {
-        throw new Error('Invalid children on Box!')
+        throw new Error('Invalid children on BoxContent!')
       }
 
       if (Children.count(children) > 1) {
         console.warn(
-          'More than one children on Box when `asChild` is true! Selecting the first one.'
+          'More than one children on BoxContent when `asChild` is true! Selecting the first one.'
         )
       }
 

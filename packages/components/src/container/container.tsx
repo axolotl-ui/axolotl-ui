@@ -1,66 +1,68 @@
 'use client'
 
-import React, {
+import {
+  Children,
+  cloneElement,
   forwardRef,
   isValidElement,
-  Children,
   type ReactElement,
   type ReactNode,
-  type Ref,
-  cloneElement
+  type Ref
 } from 'react'
 
 import { cx, useOptions, type Components } from '@axolotl-ui/core'
 
 import type { ContainerProps, ContainerRef } from '@/container/types'
 
-export const Container = forwardRef((opts: ContainerProps, ref: Ref<ContainerRef>): ReactNode => {
-  const { options } = useOptions()
+export const Container = forwardRef<ContainerRef, ContainerProps>(
+  (opts: ContainerProps, ref: Ref<ContainerRef>): ReactNode => {
+    const { options } = useOptions()
 
-  const { all, Container }: Components = options.extend.components
+    const { all, Container }: Components = options.extend.components
 
-  const {
-    children,
-    asChild,
-    className,
-    color = 'accent1',
-    ...restOpts
-  }: ContainerProps = { ...all, ...Container, ...opts }
+    const {
+      children,
+      asChild,
+      className,
+      color = 'accent1',
+      ...restOpts
+    }: ContainerProps = { ...all, ...Container, ...opts }
 
-  const props: ContainerProps = {
-    ...restOpts,
-    ref,
-    color,
-    className: cx(
-      'mx-auto w-11/12 px-2',
-      'transition-all duration-300',
-      all?.className,
-      Container?.className,
-      className
-    )
-  }
-
-  if (children && asChild) {
-    if (!isValidElement(children)) {
-      throw new Error('Invalid children on Continer!')
-    }
-
-    if (Children.count(children) > 1) {
-      console.warn(
-        'More than one children on Container when `asChild` is true! Selecting the first one.'
+    const props: ContainerProps = {
+      ...restOpts,
+      ref,
+      color,
+      className: cx(
+        'mx-auto w-11/12 md:w-10/12 lg:w-9/12 px-2',
+        'transition-all duration-300',
+        all?.className,
+        Container?.className,
+        className
       )
     }
 
-    const _children: ReactElement = (
-      Children.count(children) > 1 ? Children.toArray(children)[0] : children
-    ) as ReactElement
+    if (children && asChild) {
+      if (!isValidElement(children)) {
+        throw new Error('Invalid children on Continer!')
+      }
 
-    return cloneElement(_children, {
-      ...props,
-      ..._children.props
-    })
+      if (Children.count(children) > 1) {
+        console.warn(
+          'More than one children on Container when `asChild` is true! Selecting the first one.'
+        )
+      }
+
+      const _children: ReactElement = (
+        Children.count(children) > 1 ? Children.toArray(children)[0] : children
+      ) as ReactElement
+
+      return cloneElement(_children, {
+        ...props,
+        ..._children.props
+      })
+    }
+
+    return <div {...props}>{children}</div>
   }
-
-  return <div {...props}>{children}</div>
-})
+)
 Container.displayName = 'Container'

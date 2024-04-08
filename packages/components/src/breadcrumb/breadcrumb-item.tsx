@@ -5,13 +5,13 @@ import React, { forwardRef, type ReactNode, type Ref } from 'react'
 import { useOptions, type Components, type VariantProps, cx } from '@axolotl-ui/core'
 import { Text, textStyles } from '@/text/text'
 
-import type { BreadcrumbItemProps, BreadcrumbItemRef } from '@/breadcrumb/types'
+import type { BreadcrumbItemProps, BreadcrumbItemRef, BreadcrumbProps } from '@/breadcrumb/types'
 
 export type BreadcrumbItemStyles = VariantProps<typeof breadcrumbStyles>
 
 export const breadcrumbStyles = textStyles
 
-export const BreadcrumbItem = forwardRef(
+export const BreadcrumbItem = forwardRef<BreadcrumbItemRef, BreadcrumbItemProps>(
   (opts: BreadcrumbItemProps, ref: Ref<BreadcrumbItemRef>): ReactNode => {
     const { options } = useOptions()
 

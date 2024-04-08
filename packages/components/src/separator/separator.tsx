@@ -1,10 +1,18 @@
 'use client'
 
-import React, { type ElementType, type ReactNode } from 'react'
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+  type Ref
+} from 'react'
 
 import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
-import type { SeparatorProps } from '@/separator/types'
+import type { SeparatorProps, SeparatorRef } from '@/separator/types'
 
 export type SeparatorStyles = VariantProps<typeof separatorStyles>
 
@@ -26,38 +34,64 @@ export const separatorStyles = cva({
   }
 })
 
-export const Separator = <T extends ElementType = 'div'>(opts: SeparatorProps<T>): ReactNode => {
-  const { options } = useOptions()
+export const Separator = forwardRef<SeparatorRef, SeparatorProps>(
+  (opts: SeparatorProps, ref: Ref<SeparatorRef>): ReactNode => {
+    const { options } = useOptions()
 
-  const { all, Separator }: Components = options.extend.components
+    const { all, Separator }: Components = options.extend.components
 
-  const {
-    component: Component = 'div',
-    children,
-    className,
-    color = 'accent1',
-    orientation = 'horizontal',
-    ...props
-  }: SeparatorProps<T> = { ...all, ...Separator, ...opts }
+    const {
+      children,
+      asChild,
+      className,
+      color = 'accent1',
+      orientation = 'horizontal',
+      ...restOpts
+    }: SeparatorProps = { ...all, ...Separator, ...opts }
 
-  return (
-    <Component
-      {...props}
-      aria-orientation={orientation}
-      role="separator"
-      color={color}
-      className={separatorStyles({
+    const props: SeparatorProps = {
+      ...restOpts,
+      ref,
+      color,
+      'aria-orientation': orientation,
+      role: 'separator',
+      className: separatorStyles({
         orientation,
         className: [all?.className, Separator?.className, className]
-      })}
-    >
-      <div
-        color={color}
-        className="bg-primary absolute mb-1 flex max-h-8 w-fit items-center justify-center px-2"
-      >
-        {children}
+      })
+    }
+
+    if (children && asChild) {
+      if (!isValidElement(children)) {
+        throw new Error('Invalid children on Separator!')
+      }
+
+      if (Children.count(children) > 1) {
+        console.warn(
+          'More than one children on Separator when `asChild` is true! Selecting the first one.'
+        )
+      }
+
+      const _children: ReactElement = (
+        Children.count(children) > 1 ? Children.toArray(children)[0] : children
+      ) as ReactElement
+
+      return cloneElement(_children, {
+        ...props,
+        ..._children.props
+      })
+    }
+
+    return (
+      <div {...props}>
+        <div
+          color={color}
+          className="bg-primary absolute mb-1 flex max-h-8 w-fit items-center justify-center px-2"
+        >
+          {children}
+        </div>
       </div>
-    </Component>
-  )
-}
+    )
+  }
+)
 Separator.displayName = 'Separator'

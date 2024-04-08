@@ -1,41 +1,48 @@
 'use client'
 
-import React, { type ElementType, type ReactNode } from 'react'
+import { forwardRef, type ReactNode, type Ref } from 'react'
 
-import { cx, useOptions, type Components } from '@axolotl-ui/core'
-import { Button } from '@/button/button'
 import { useDialogContext } from '@/dialog/dialog-context'
+import { cx, useOptions, type Components } from '@axolotl-ui/core'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
-import type { DialogTriggerProps } from '@/dialog/types'
+import { Button } from '@/button/button'
+import type { DialogTriggerProps, DialogTriggerRef } from '@/dialog/types'
 
-export const DialogTrigger = <T extends ElementType = 'button'>(
-  opts: DialogTriggerProps<T>
-): ReactNode => {
-  const { options } = useOptions()
-  const { open, setOpen } = useDialogContext()
+export const DialogTrigger = forwardRef<DialogTriggerRef, DialogTriggerProps>(
+  (opts: DialogTriggerProps, ref: Ref<DialogTriggerRef>): ReactNode => {
+    const { options } = useOptions()
+    const { open, setOpen } = useDialogContext()
 
-  const { all, DialogTrigger }: Components = options.extend.components
+    const { all, DialogTrigger }: Components = options.extend.components
 
-  const {
-    children,
-    className,
-    color = 'accent1',
-    ...props
-  }: DialogTriggerProps<T> = { ...all, ...DialogTrigger, ...opts }
+    const {
+      children,
+      asChild,
+      className,
+      color = 'accent1',
+      onClick,
+      ...restOpts
+    }: DialogTriggerProps = { ...all, ...DialogTrigger, ...opts }
 
-  return (
-    <DialogPrimitive.Trigger
-      {...props}
-      as={Button}
-      color={color}
-      onClick={() => {
+    const props: DialogTriggerProps = {
+      ...restOpts,
+      asChild,
+      ref,
+      color,
+      onClick: (e) => {
         setOpen(!open)
-      }}
-      className={cx(all?.className, DialogTrigger?.className, className)}
-    >
-      {children}
-    </DialogPrimitive.Trigger>
-  )
-}
+
+        onClick?.(e)
+      },
+      className: cx(all?.className, DialogTrigger?.className, className)
+    }
+
+    return (
+      <DialogPrimitive.Trigger {...props} asChild>
+        <Button>{children}</Button>
+      </DialogPrimitive.Trigger>
+    )
+  }
+)
 DialogTrigger.displayName = 'DialogTrigger'

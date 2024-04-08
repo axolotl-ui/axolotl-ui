@@ -1,14 +1,10 @@
-import type { ComponentProps, ElementType, RefAttributes } from 'react'
+import type { ComponentProps } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { TextareaStyles } from '@/textarea/textarea'
+import type { GlobalProps } from '@/types'
 
-export type TextareaProps<T extends ElementType = 'textarea'> = {
-  component?: T
-} & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
-  TextareaStyles
+export type TextareaRef = HTMLTextAreaElement
+export type TextareaProps = GlobalProps & ComponentProps<'textarea'> & TextareaStyles
 
 declare module '@axolotl-ui/core' {
   export interface Components {

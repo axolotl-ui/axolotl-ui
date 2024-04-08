@@ -1,14 +1,14 @@
-import type { ComponentProps, ElementType, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { TextStyles } from '@/text/text'
+import type { GlobalProps } from '@/types'
 
-export type TextProps<T extends ElementType = 'p'> = {
-  component?: T
+export type TextRef = HTMLParagraphElement
+export type TextProps = {
   children?: ReactNode
+  asChild?: boolean
 } & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
+  ComponentProps<'p'> &
   TextStyles
 
 declare module '@axolotl-ui/core' {

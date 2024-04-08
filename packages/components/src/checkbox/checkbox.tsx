@@ -1,8 +1,8 @@
 'use client'
 
-import React, { forwardRef, type ReactNode, type Ref } from 'react'
+import { forwardRef, type ReactNode, type Ref } from 'react'
 
-import { useOptions, cva, type Components, type VariantProps, cx } from '@axolotl-ui/core'
+import { cva, cx, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
 import { Label } from '@/label/label'
 

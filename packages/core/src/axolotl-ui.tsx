@@ -2,15 +2,13 @@
 
 import React, { useState, type ReactNode } from 'react'
 
-import { ComponentsProvider } from '@axolotl-ui/components'
-import { useOptions } from '@axolotl-ui/core'
-import { generateOptions } from '@/utils/options'
-import { OptionsProvider } from '@/contexts/options'
+import { OptionsProvider, useOptions } from '@/contexts/options'
 import { CSSVariablesProvider } from '@/providers/css'
+import { generateOptions } from '@/utils/options'
 import { ThemeProvider } from 'next-themes'
 
-import type { Optional } from '@/types/other'
 import type { Options } from '@/types/options'
+import type { Optional } from '@/types/other'
 
 export type AxolotlUIProps = {
   children: React.ReactNode
@@ -53,11 +51,9 @@ export const AxolotlUI: React.FC<AxolotlUIProps> = ({
             attribute="class"
             disableTransitionOnChange
           >
-            <ComponentsProvider>
-              <div className="axolotl-content text-primary-on bg-primary z-[1] h-max w-max">
-                {children}
-              </div>
-            </ComponentsProvider>
+            <div className="axolotl-content text-primary-on bg-primary z-[1] h-full w-full">
+              {children}
+            </div>
           </ThemeProvider>
         </CSSVariablesProvider>
       ) : (

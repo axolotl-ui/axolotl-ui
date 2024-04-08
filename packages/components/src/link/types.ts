@@ -1,14 +1,14 @@
-import type { ComponentProps, ElementType, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { LinkStyles } from '@/link/link'
+import type { GlobalProps } from '@/types'
 
-export type LinkProps<T extends ElementType = 'a'> = {
-  component?: T
+export type LinkRef = HTMLAnchorElement
+export type LinkProps = {
   children?: ReactNode
+  asChild?: boolean
 } & GlobalProps &
-  ComponentProps<T> &
-  RefAttributes<T> &
+  ComponentProps<'a'> &
   LinkStyles
 
 declare module '@axolotl-ui/core' {

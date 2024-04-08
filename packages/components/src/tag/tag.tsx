@@ -1,10 +1,17 @@
 'use client'
 
-import React, { type ElementType } from 'react'
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type ReactElement,
+  type Ref
+} from 'react'
 
 import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
 
-import type { TagProps } from '@/tag/types'
+import type { TagProps, TagRef } from '@/tag/types'
 
 export type TagStyles = VariantProps<typeof tagStyles>
 
@@ -46,35 +53,53 @@ export const tagStyles = cva({
   }
 })
 
-export const Tag = <T extends ElementType = 'span'>(opts: TagProps<T>) => {
+export const Tag = forwardRef<TagRef, TagProps>((opts: TagProps, ref: Ref<TagRef>) => {
   const { options } = useOptions()
 
   const { all, Tag }: Components = options.extend.components
 
   const {
-    component: Component = 'span',
     children,
+    asChild,
     className,
     color = 'accent1',
     variant,
     size,
     transparent,
-    ...props
-  }: TagProps<T> = { ...all, ...Tag, ...opts }
+    ...restOpts
+  }: TagProps = { ...all, ...Tag, ...opts }
 
-  return (
-    <Component
-      {...props}
-      color={color}
-      className={tagStyles({
-        variant,
-        size,
-        transparent,
-        className: [all?.className, Tag?.className, className]
-      })}
-    >
-      {children}
-    </Component>
-  )
-}
+  const props: TagProps = {
+    ...restOpts,
+    ref,
+    color,
+    className: tagStyles({
+      variant,
+      size,
+      transparent,
+      className: [all?.className, Tag?.className, className]
+    })
+  }
+
+  if (children && asChild) {
+    if (!isValidElement(children)) {
+      throw new Error('Invalid children on Tag!')
+    }
+
+    if (Children.count(children) > 1) {
+      console.warn('More than one children on Tag when `asChild` is true! Selecting the first one.')
+    }
+
+    const _children: ReactElement = (
+      Children.count(children) > 1 ? Children.toArray(children)[0] : children
+    ) as ReactElement
+
+    return cloneElement(_children, {
+      ...props,
+      ..._children.props
+    })
+  }
+
+  return <span {...props}>{children}</span>
+})
 Tag.displayName = 'Tag'

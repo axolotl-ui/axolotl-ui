@@ -7,8 +7,8 @@ export const config = (opts: Options): Options => {
         directives: false
       }
     },
-    format: ['esm'],
-    external: ['react', 'react-dom', 'tailwindcss', 'next'],
+    format: ['esm', 'cjs'],
+    external: ['react', 'react-dom'],
     target: 'esnext',
     minifyIdentifiers: !opts.watch,
     minifySyntax: !opts.watch,
@@ -20,6 +20,6 @@ export const config = (opts: Options): Options => {
     splitting: true,
     sourcemap: !opts.watch,
     cjsInterop: true,
-    experimentalDts: true
-  } as Options
+    dts: true
+  }
 }

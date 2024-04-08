@@ -1,14 +1,14 @@
 'use client'
 
-import React, { type ReactNode } from 'react'
+import { forwardRef, type ReactNode, type Ref } from 'react'
 
-import { cx, useOptions, type Components } from '@axolotl-ui/core'
 import { useDialogContext } from '@/dialog/dialog-context'
-import { AnimatePresence, motion, type Variants } from 'framer-motion'
 import { Overlay } from '@/overlay/overlay'
+import { cx, useOptions, type Components } from '@axolotl-ui/core'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { AnimatePresence, motion, type Variants } from 'framer-motion'
 
-import type { DialogContentProps } from '@/dialog/types'
+import type { DialogContentProps, DialogContentRef } from '@/dialog/types'
 
 export const dialogContentAnimationVariants: Variants = {
   open: {
@@ -29,57 +29,60 @@ export const dialogContentAnimationVariants: Variants = {
   }
 }
 
-export const DialogContent = (opts: DialogContentProps): ReactNode => {
-  const { options } = useOptions()
-  const { open, setOpen, name } = useDialogContext()
+export const DialogContent = forwardRef<DialogContentRef, DialogContentProps>(
+  (opts: DialogContentProps, ref: Ref<DialogContentRef>): ReactNode => {
+    const { options } = useOptions()
+    const { open, setOpen, name } = useDialogContext()
 
-  const { all, DialogContent }: Components = options.extend.components
+    const { all, DialogContent }: Components = options.extend.components
 
-  const {
-    children,
-    className,
-    color = 'accent2',
-    ...props
-  }: DialogContentProps = { ...all, ...DialogContent, ...opts }
+    const {
+      children,
+      className,
+      color = 'accent2',
+      ...restOpts
+    }: DialogContentProps = { ...all, ...DialogContent, ...opts }
 
-  return (
-    <AnimatePresence mode="wait">
-      {open && (
-        <DialogPrimitive.Portal forceMount>
-          <DialogPrimitive.Overlay asChild>
-            <Overlay open={open} onOpenChange={setOpen} />
-          </DialogPrimitive.Overlay>
+    const props: DialogContentProps = {
+      ...restOpts,
+      ref,
+      color,
+      initial: 'closed',
+      animate: 'open',
+      exit: 'closed',
+      variants: dialogContentAnimationVariants,
+      key: Math.random(),
+      className: cx(
+        'text-primary-on bg-primary',
+        'rounded-xl',
+        'z-20',
+        'absolute',
+        'flex',
+        'inset-x-0 inset-y-0',
+        'overflow-y-scroll',
+        'max-h-3/4 h-fit w-11/12',
+        'mx-auto px-4 py-1.5',
+        all?.className,
+        DialogContent?.className,
+        className
+      )
+    }
 
-          <DialogPrimitive.Content asChild>
-            <motion.div
-              {...props}
-              color={color}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              variants={dialogContentAnimationVariants}
-              className={cx(
-                'text-primary-on bg-primary',
-                'rounded-xl',
-                'z-20',
-                'absolute',
-                'flex',
-                'inset-x-0 inset-y-0',
-                'overflow-y-scroll',
-                'max-h-3/4 h-fit w-11/12',
-                'mx-auto px-4 py-1.5',
-                all?.className,
-                DialogContent?.className,
-                className
-              )}
-              key={name}
-            >
-              {children}
-            </motion.div>
-          </DialogPrimitive.Content>
-        </DialogPrimitive.Portal>
-      )}
-    </AnimatePresence>
-  )
-}
+    return (
+      <AnimatePresence mode="wait">
+        {open && (
+          <DialogPrimitive.Portal forceMount>
+            <DialogPrimitive.Overlay asChild>
+              <Overlay open={open} setOpen={setOpen} />
+            </DialogPrimitive.Overlay>
+
+            <DialogPrimitive.Content asChild>
+              <motion.div {...props}>{children}</motion.div>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    )
+  }
+)
 DialogContent.displayName = 'DialogContent'

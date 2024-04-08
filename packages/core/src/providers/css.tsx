@@ -2,11 +2,11 @@
 
 import React, { useEffect } from 'react'
 
-import { HEXToRGB, generateColorVariants, RGBToP3 } from '@/utils/color'
 import { useOptions } from '@/contexts/options'
+import { HEXToRGB, RGBToP3, generateColorVariants } from '@/utils/color'
 
-import type { Options } from '@/types/options'
 import type { ColorNames, LightnessLevel } from '@/types/color'
+import type { Options } from '@/types/options'
 
 export type CSSVariablesProviderProps = {
   children: React.ReactNode
@@ -38,7 +38,7 @@ const getStyles = (options: Options): Styles => {
       }
     ),
     {
-      '--radius': options.extend.radius
+      '--radius-base': options.extend.radius
     }
   )
 }
@@ -46,9 +46,9 @@ const getStyles = (options: Options): Styles => {
 const setStyles = (options: Options) => {
   const styles = getStyles(options)
 
-    ; (Object.keys(styles) as Array<keyof Styles>).map((name: Variable) => {
-      ; (document || window.document).documentElement.style.setProperty(name, styles[name])
-    })
+  ;(Object.keys(styles) as Array<keyof Styles>).map((name: Variable) => {
+    ;(document || window.document).documentElement.style.setProperty(name, styles[name])
+  })
 }
 
 export const CSSVariablesProvider: React.FC<CSSVariablesProviderProps> = ({

@@ -1,8 +1,9 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
 import type { ButtonStyles } from '@/button/button'
+import type { GlobalProps } from '@/types'
 
+export type ButtonRef = HTMLButtonElement
 export type ButtonProps = {
   children?: ReactNode
   asChild?: boolean
@@ -12,8 +13,6 @@ export type ButtonProps = {
 } & GlobalProps &
   ComponentProps<'button'> &
   ButtonStyles
-
-export type ButtonRef = HTMLButtonElement
 
 declare module '@axolotl-ui/core' {
   export interface Components {

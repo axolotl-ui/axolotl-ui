@@ -25,9 +25,6 @@ const RootLayout: React.FC<LayoutProps> = ({ children }: LayoutProps): React.Rea
     <html className={outfit.className} suppressHydrationWarning lang="en">
       <body>
         <AxolotlUI>{children}</AxolotlUI>
-
-        <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-        <script>eruda.init();</script>
       </body>
     </html>
   )

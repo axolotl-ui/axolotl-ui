@@ -16,6 +16,4 @@ export * from '@/text'
 export * from '@/textarea'
 export * from '@/toggle'
 
-export * from '@/components'
-
 export type * from '@/types'

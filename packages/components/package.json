@@ -34,8 +34,8 @@
     "url": "https://github.com/axolotl-ui/axolotl-ui/issues"
   },
   "scripts": {
-    "build": "tsup src/*",
-    "dev": "tsup src/* --watch"
+    "build": "tsup src",
+    "dev": "tsup src --watch"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@axolotl-ui/core": "workspace:*",
-    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dialog": "latest",
     "framer-motion": "latest",
     "lucide-react": "latest"
   },

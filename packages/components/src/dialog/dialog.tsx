@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useId, useState, type ReactNode } from 'react'
+import { useId, useState, type ReactNode } from 'react'
 
-import { useOptions, type Components } from '@axolotl-ui/core'
 import { DialogProvider } from '@/dialog/dialog-context'
+import { useOptions, type Components } from '@axolotl-ui/core'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import type { DialogProps } from '@/dialog/types'
