@@ -1,11 +1,16 @@
-import { defineConfig, type Options } from 'tsup'
-import { config } from '../../tsup.config'
+import { defineConfig } from "tsup";
+import { config } from "../../tsup.base.config";
 
-export default defineConfig((opts: Options) => {
-  const cfg = config(opts)
+export default defineConfig((cmdConfig) => {
+  const _config = config(cmdConfig);
 
   return {
-    external: [...(cfg.external as string[]), 'tailwindcss', 'next'],
-    ...cfg
-  }
-})
+    ..._config,
+    external: [
+      ...(_config.external as string[]),
+      "next",
+      "@emotion/cache",
+      "@emotion/react",
+    ],
+  };
+});

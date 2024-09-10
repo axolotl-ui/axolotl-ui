@@ -37,15 +37,16 @@
     "build": "tsup src",
     "dev": "tsup src --watch"
   },
+  "optionalDependencies": {
+    "lucide-react": "latest"
+  },
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "framer-motion": "latest"
   },
   "dependencies": {
-    "@axolotl-ui/core": "workspace:*",
-    "@radix-ui/react-dialog": "latest",
-    "framer-motion": "latest",
-    "lucide-react": "latest"
+    "@axolotl-ui/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "latest",

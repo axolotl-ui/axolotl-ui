@@ -1,28 +1,27 @@
-import type { ComponentProps, ReactNode, RefAttributes } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import type { InputContainerStyles, InputStyles } from '@/input/input'
+import type { GlobalComponentProps } from '@/types'
 import type { LabelProps } from '@/label/types'
-import type { GlobalProps } from '@/types'
 
-export type InputLabelProps = Omit<LabelProps, 'children'>
-export type InputContainerProps = Omit<
-  GlobalProps & ComponentProps<'div'> & RefAttributes<'div'> & InputContainerStyles,
-  'children'
->
+export type InputStyeProps = {
+  variant?: 'solid' | 'outlined'
+}
 
 export type InputRef = HTMLInputElement
 export type InputProps = {
-  labelProps?: InputLabelProps
-  containerProps?: InputContainerProps
-  label?: LabelProps['children']
+  children?: ReactNode
+
   leftAddon?: ReactNode
   rightAddon?: ReactNode
-} & GlobalProps &
-  ComponentProps<'input'> &
-  InputStyles
+
+  label?: LabelProps['children']
+  labelProps?: Omit<LabelProps, 'children'>
+} & InputStyeProps &
+  GlobalComponentProps &
+  ComponentProps<'input'>
 
 declare module '@axolotl-ui/core' {
   export interface Components {
-    Input: InputProps
+    Input?: InputProps
   }
 }

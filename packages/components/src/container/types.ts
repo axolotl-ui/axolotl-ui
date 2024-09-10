@@ -1,16 +1,16 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
+import type { GlobalComponentProps } from '@/types'
 
 export type ContainerRef = HTMLDivElement
 export type ContainerProps = {
   children?: ReactNode
   asChild?: boolean
-} & GlobalProps &
+} & GlobalComponentProps &
   ComponentProps<'div'>
 
 declare module '@axolotl-ui/core' {
   export interface Components {
-    Container: ContainerProps
+    Container?: ContainerProps
   }
 }

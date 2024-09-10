@@ -1,1 +1,2 @@
-export * from '@/contexts/options'
+export * from "@/contexts/theme-variant";
+export * from "@/contexts/theme";

@@ -1,9 +1,9 @@
 {
   "name": "examples-next",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,21 +11,17 @@
   "dependencies": {
     "@axolotl-ui/components": "workspace:*",
     "@axolotl-ui/core": "workspace:*",
+    "@emotion/cache": "^11.13.1",
+    "@emotion/react": "^11.13.0",
     "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.0.0-alpha.13",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "postcss": "latest",
-    "postcss-import": "latest",
-    "prettier": "latest",
-    "prettier-plugin-tailwindcss": "latest",
-    "tailwindcss": "4.0.0-alpha.13",
     "typescript": "latest"
   }
 }

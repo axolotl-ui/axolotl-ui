@@ -1,71 +1,55 @@
 'use client'
 
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type ReactNode,
-  type Ref
-} from 'react'
+import React, { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { BoxProps, BoxRef } from '@/box/types'
+import type { BoxProps } from '@/box/types'
 
-export type BoxStyles = VariantProps<typeof boxStyles>
+const boxStyles = css({
+  borderRadius: '$2xl',
 
-export const boxStyles = cva({
-  base: ['rounded-xl', 'transition-all duration-300'],
   variants: {
     variant: {
-      solid: 'bg-secondary text-secondary-on',
-      outline: ['bg-primary text-primary-on', 'border border-border'],
-      unstyled: 'bg-transparent text-primary-on'
-    },
-    transparent: {
-      true: '',
-      false: ''
+      solid: {
+        backgroundColor: '$container',
+        color: '$on_container'
+      },
+
+      outlined: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        borderWidth: '$default',
+        borderColor: '$border',
+        borderStyle: 'solid'
+      }
     }
-  },
-  compoundVariants: [
-    {
-      variant: 'outline',
-      transparent: true,
-      className: 'bg-transparent'
-    }
-  ],
-  defaultVariants: {
-    variant: 'solid',
-    transparent: false
   }
 })
 
-export const Box = forwardRef<BoxRef, BoxProps>((opts: BoxProps, ref: Ref<BoxRef>): ReactNode => {
-  const { options } = useOptions()
-
-  const { all, Box }: Components = options.extend.components
+export const Box: React.FC<BoxProps> = (boxProps: BoxProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
   const {
     children,
     asChild,
     className,
-    color = 'accent1',
-    variant,
-    transparent,
-    ...restOpts
-  }: BoxProps = { ...all, ...Box, ...opts }
+    variant = 'solid',
+    ...restProps
+  }: BoxProps = { ...components.all, ...components?.Box, ...boxProps }
 
-  const props = {
-    ...restOpts,
-    ref,
-    color,
-    className: boxStyles({
-      variant,
-      transparent,
-      className: [all?.className, Box?.className, className]
-    })
+  const props: BoxProps = {
+    className: cn(
+      boxStyles({ variant }),
+      components?.all?.className,
+      components?.Box?.className,
+      className
+    ),
+
+    ...restProps
   }
 
   if (children && asChild) {
@@ -88,5 +72,5 @@ export const Box = forwardRef<BoxRef, BoxProps>((opts: BoxProps, ref: Ref<BoxRef
   }
 
   return <div {...props}>{children}</div>
-})
+}
 Box.displayName = 'Box'

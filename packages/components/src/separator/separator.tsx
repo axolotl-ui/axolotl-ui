@@ -1,97 +1,73 @@
-'use client'
+"use client";
 
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type ReactNode,
-  type Ref
-} from 'react'
+import type React from "react";
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
+import { css, cn, useOptions } from "@axolotl-ui/core";
 
-import type { SeparatorProps, SeparatorRef } from '@/separator/types'
+import type { SeparatorProps } from "@/separator/types";
 
-export type SeparatorStyles = VariantProps<typeof separatorStyles>
+const separatorStyles = css({
+  backgroundColor: "$border",
 
-export const separatorStyles = cva({
-  base: [
-    'bg-border',
-    'transition-all duration-300',
-    'relative',
-    'flex items-center justify-center'
-  ],
+  position: "relative",
+  display: "flex",
+
+  justifyContent: "center",
+  alignItems: "center",
+
+  transitionProperty: "color, background-color, border-color",
+  transitionDuration: "300ms",
+  transitionTimingFunction: "ease-in-out",
+
   variants: {
     orientation: {
-      horizontal: ['my-4', 'h-0.5 w-full'],
-      vertical: ['mx-4', 'h-full w-0.5']
-    }
+      horizontal: {
+        height: "$025",
+        width: "100%",
+
+        marginY: "$4",
+      },
+      vertical: {
+        width: "$025",
+        height: "100%",
+
+        marginX: "$4",
+      },
+    },
   },
-  defaultVariants: {
-    orientation: 'horizontal'
-  }
-})
+});
 
-export const Separator = forwardRef<SeparatorRef, SeparatorProps>(
-  (opts: SeparatorProps, ref: Ref<SeparatorRef>): ReactNode => {
-    const { options } = useOptions()
+export const Separator: React.FC<SeparatorProps> = (
+  separatorProps: SeparatorProps,
+): React.ReactNode => {
+  const {
+    options: { components },
+  } = useOptions();
 
-    const { all, Separator }: Components = options.extend.components
+  const {
+    children,
+    className,
+    orientation = "horizontal",
+    ...props
+  }: SeparatorProps = {
+    ...components.all,
+    ...components?.Separator,
+    ...separatorProps,
+  };
 
-    const {
-      children,
-      asChild,
-      className,
-      color = 'accent1',
-      orientation = 'horizontal',
-      ...restOpts
-    }: SeparatorProps = { ...all, ...Separator, ...opts }
-
-    const props: SeparatorProps = {
-      ...restOpts,
-      ref,
-      color,
-      'aria-orientation': orientation,
-      role: 'separator',
-      className: separatorStyles({
-        orientation,
-        className: [all?.className, Separator?.className, className]
-      })
-    }
-
-    if (children && asChild) {
-      if (!isValidElement(children)) {
-        throw new Error('Invalid children on Separator!')
-      }
-
-      if (Children.count(children) > 1) {
-        console.warn(
-          'More than one children on Separator when `asChild` is true! Selecting the first one.'
-        )
-      }
-
-      const _children: ReactElement = (
-        Children.count(children) > 1 ? Children.toArray(children)[0] : children
-      ) as ReactElement
-
-      return cloneElement(_children, {
-        ...props,
-        ..._children.props
-      })
-    }
-
-    return (
-      <div {...props}>
-        <div
-          color={color}
-          className="bg-primary absolute mb-1 flex max-h-8 w-fit items-center justify-center px-2"
-        >
-          {children}
-        </div>
-      </div>
-    )
-  }
-)
-Separator.displayName = 'Separator'
+  return (
+    <div
+      {...props}
+      className={cn(
+        separatorStyles({ orientation }),
+        components?.all?.className,
+        components?.Separator?.className,
+        className,
+      )}
+      aria-orientation={orientation}
+    >
+      {children}
+    </div>
+  );
+};
+Separator.displayName = "Separator";

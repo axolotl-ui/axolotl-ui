@@ -1,64 +1,80 @@
-'use client'
+"use client";
 
-import React, { useState, type ReactNode } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
-import { OptionsProvider, useOptions } from '@/contexts/options'
-import { CSSVariablesProvider } from '@/providers/css'
-import { generateOptions } from '@/utils/options'
-import { ThemeProvider } from 'next-themes'
+import {
+  CacheProvider,
+  ThemeProvider as EmotionThemeProvider,
+} from "@emotion/react";
+import createCache, { type EmotionCache } from "@emotion/cache";
 
-import type { Options } from '@/types/options'
-import type { Optional } from '@/types/other'
+import { createTheme } from "@/utils/create-theme";
+import { setHTMLTheme, useTheme } from "@/hooks/use-theme-variant";
+
+import { ThemeProvider } from "@/contexts/theme";
+import { ThemeVariantProvider } from "@/contexts/theme-variant";
+
+import { GlobalStyles } from "@/styles/global";
+
+import type { Theme, ThemeCSSFields, ThemeVariant } from "@/types/theme";
 
 export type AxolotlUIProps = {
-  children: React.ReactNode
-  options?: Optional<Options>
-  global?: boolean
-}
+  children: React.ReactNode;
+  theme?: Theme;
+  cache?: any;
+};
 
 export const AxolotlUI: React.FC<AxolotlUIProps> = ({
   children,
-  options: userOptions,
-  global: _global
-}: AxolotlUIProps): ReactNode => {
-  const [options, setOptions] = useState<Options>(generateOptions(userOptions))
+  theme: userTheme,
+}: AxolotlUIProps): React.ReactNode => {
+  const [themeVariant, _setThemeVariant] = useState<ThemeVariant>(
+    useTheme(userTheme?.theme),
+  );
 
-  let global: boolean = true
+  const setThemeVariant = (themeVariant: ThemeVariant) => {
+    setHTMLTheme(themeVariant);
 
-  if (_global === undefined || _global === null) {
-    try {
-      const ctx = useOptions()?.options?.theme
+    _setThemeVariant(themeVariant);
+  };
 
-      if (ctx) {
-        global = false
-      } else {
-        global = true
-      }
-    } catch {
-      global = true
-    }
-  } else {
-    global = _global
-  }
+  const [theme, setTheme] = useState<Theme>(createTheme({}));
+
+  useEffect(() => {
+    setThemeVariant(useTheme(userTheme?.theme));
+
+    setTheme(createTheme({ ...userTheme }, themeVariant));
+  }, []);
+
+  useLayoutEffect(() => {
+    setTheme(createTheme({ ...userTheme }, themeVariant));
+  }, [themeVariant]);
+
+  useLayoutEffect(() => {
+    setThemeVariant(useTheme(theme.theme));
+  }, [theme.theme]);
+
+  const [cache] = useState<EmotionCache>(() => createCache({ key: "axolotl" }));
 
   return (
-    <OptionsProvider value={{ options, setOptions }}>
-      {global ? (
-        <CSSVariablesProvider>
-          <ThemeProvider
-            forcedTheme={options.theme === 'system' ? undefined : options.theme}
-            enableSystem={options.theme === 'system'}
-            attribute="class"
-            disableTransitionOnChange
-          >
-            <div className="axolotl-content text-primary-on bg-primary z-[1] h-full w-full">
-              {children}
-            </div>
-          </ThemeProvider>
-        </CSSVariablesProvider>
-      ) : (
-        children
-      )}
-    </OptionsProvider>
-  )
-}
+    <CacheProvider value={cache}>
+      <ThemeVariantProvider
+        value={{
+          themeVariant,
+          setThemeVariant,
+        }}
+      >
+        <ThemeProvider
+          value={{
+            theme,
+            setTheme,
+          }}
+        >
+          <GlobalStyles />
+
+          {children}
+        </ThemeProvider>
+      </ThemeVariantProvider>
+    </CacheProvider>
+  );
+};

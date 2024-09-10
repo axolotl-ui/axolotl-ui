@@ -1,18 +1,22 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
-import type { BadgeStyles } from '@/badge/badge'
+import type { GlobalComponentProps } from '@/types'
+
+export type BadgeStyeProps = {
+  variant?: 'solid' | 'off' | 'outlined'
+  size?: 'default' | 'sm' | 'lg'
+}
 
 export type BadgeRef = HTMLSpanElement
 export type BadgeProps = {
   children?: ReactNode
   asChild?: boolean
-} & GlobalProps &
-  ComponentProps<'span'> &
-  BadgeStyles
+} & BadgeStyeProps &
+  GlobalComponentProps &
+  ComponentProps<'span'>
 
 declare module '@axolotl-ui/core' {
   export interface Components {
-    Badge: BadgeProps
+    Badge?: BadgeProps
   }
 }

@@ -1,93 +1,141 @@
 'use client'
 
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type ReactNode,
-  type Ref
-} from 'react'
+import type React from 'react'
+import { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { HeadingProps, HeadingRef } from '@/heading/types'
+import type { HeadingProps } from '@/heading/types'
 
-export type HeadingStyles = VariantProps<typeof headingStyles>
+const headingStyles = css({
+  transitionProperty: 'color, background-color, border-color',
+  transitionDuration: '300ms',
+  transitionTimingFunction: 'ease-in-out',
 
-export const headingStyles = cva({
-  base: ['transition-all duration-300'],
   variants: {
     variant: {
-      h1: ['text-5xl font-bold', 'mb-6', 'text-primary-on'],
-      h2: ['text-4xl font-bold', 'mb-4', 'text-primary-on'],
-      h3: ['text-3xl font-medium', 'mb-2', 'text-secondary-on'],
-      h4: ['text-2xl', 'mb-1.5', 'text-secondary-on'],
-      h5: ['text-xl', 'mb-1', 'text-tertiary-on'],
-      h6: ['text-lg', 'text-tertiary-on']
+      h1: {
+        color: '$on_background',
+
+        fontSize: '$5xl',
+        fontWeight: '$bold',
+
+        lineHeight: 1,
+
+        marginBottom: '$10'
+      },
+
+      h2: {
+        color: '$on_background',
+
+        fontSize: '$4xl',
+        fontWeight: '$bold',
+
+        lineHeight: 1,
+
+        marginBottom: '$6'
+      },
+
+      h3: {
+        color: '$on_background',
+
+        fontSize: '$3xl',
+        fontWeight: '$semibold',
+
+        lineHeight: 1,
+
+        marginBottom: '$4'
+      },
+
+      h4: {
+        color: '$on_container',
+
+        fontSize: '$2xl',
+        fontWeight: '$medium',
+
+        marginBottom: '$2'
+      },
+
+      h5: {
+        color: '$on_container',
+
+        fontSize: '$xl',
+
+        marginBottom: '$1'
+      },
+
+      h6: {
+        color: '$on_container',
+
+        fontSize: '$lg'
+      }
     },
+
     separator: {
-      true: ['border-b border-border', 'pb-2'],
-      false: ''
+      true: {
+        paddingBottom: '$3',
+
+        borderBottomWidth: '$thicc',
+        borderColor: '$border',
+        borderStyle: 'solid'
+      },
+      false: {}
     }
-  },
-  defaultVariants: {
-    variant: 'h2',
-    separator: true
   }
 })
 
-export const Heading = forwardRef<HeadingRef, HeadingProps>(
-  (opts: HeadingProps, ref: Ref<HeadingRef>): ReactNode => {
-    const { options } = useOptions()
+export const Heading: React.FC<HeadingProps> = (headingProps: HeadingProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
-    const { all, Heading }: Components = options.extend.components
-
-    const {
-      children,
-      asChild,
-      className,
-      color = 'accent1',
-      variant,
-      separator,
-      ...restOpts
-    }: HeadingProps = { ...all, ...Heading, ...opts }
-
-    const props: HeadingProps = {
-      ...restOpts,
-      ref,
-      children,
-      color,
-      className: headingStyles({
-        variant,
-        separator,
-        className: [all?.className, Heading?.className, className]
-      })
-    }
-
-    if (children && asChild) {
-      if (!isValidElement(children)) {
-        throw new Error('Invalid children on Heading!')
-      }
-
-      if (Children.count(children) > 1) {
-        console.warn(
-          'More than one children on Heading when `asChild` is true! Selecting the first one.'
-        )
-      }
-
-      const _children: ReactElement = (
-        Children.count(children) > 1 ? Children.toArray(children)[0] : children
-      ) as ReactElement
-
-      return cloneElement(_children, {
-        ...props,
-        ..._children.props
-      })
-    }
-
-    return <h1 {...props}>{children}</h1>
+  const {
+    children,
+    asChild,
+    className,
+    variant = 'h2',
+    separator = true,
+    ...restProps
+  }: HeadingProps = {
+    ...components.all,
+    ...components?.Heading,
+    ...headingProps
   }
-)
+
+  const props: HeadingProps = {
+    className: cn(
+      headingStyles({ variant, separator }),
+      components?.all?.className,
+      components?.Heading?.className,
+      className
+    ),
+
+    ...restProps
+  }
+
+  if (children && asChild) {
+    if (!isValidElement(children)) {
+      throw new Error('Invalid children on Heading!')
+    }
+
+    if (Children.count(children) > 1) {
+      console.warn(
+        'More than one children on Heading when `asChild` is true! Selecting the first one.'
+      )
+    }
+
+    const _children: ReactElement = (
+      Children.count(children) > 1 ? Children.toArray(children)[0] : children
+    ) as ReactElement
+
+    return cloneElement(_children, {
+      ...props,
+      ..._children.props
+    })
+  }
+
+  const Component = variant
+
+  return <Component {...props}>{children}</Component>
+}
 Heading.displayName = 'Heading'

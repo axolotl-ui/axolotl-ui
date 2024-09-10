@@ -1,135 +1,176 @@
 'use client'
 
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type Ref
-} from 'react'
+import type React from 'react'
+import { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
-import { LoaderCircle } from 'lucide-react'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { ButtonProps, ButtonRef } from '@/button/types'
+import type { ButtonProps } from '@/button/types'
 
-export type ButtonStyles = VariantProps<typeof buttonStyles>
+const buttonStyles = css({
+  cursor: 'pointer',
 
-export const buttonStyles = cva({
-  base: [
-    'items-center justify-center flex',
-    'w-fit',
-    'disabled:opacity-50',
-    'font-bold',
-    'active:scale-95',
-    'rounded-xl',
-    'disabled:pointer-events-none',
-    'transition-all duration-300'
-  ],
+  display: 'flex',
+
+  justifyContent: 'center',
+  alignItems: 'center',
+
+  width: 'fit-content',
+
+  transitionProperty: 'all',
+  transitionDuration: '300ms',
+  transitionTimingFunction: 'ease-in-out',
+
+  borderRadius: '$2xl',
+
+  fontWeight: '$bold',
+
+  '&:active': {
+    transform: 'scale(0.90)'
+  },
+
+  '&:disabled': {
+    pointerEvents: 'none',
+    cursor: 'not-allowed',
+    opacity: 0.5
+  },
+
+  '&:hover': {
+    fontWeight: '$extrabold'
+  },
+
   variants: {
     variant: {
-      solid: ['bg-bright text-bright-on', 'hover:bg-bright-hover'],
-      off: ['bg-secondary text-secondary-on', 'hover:bg-secondary-hover hover:text-tertiary-on'],
-      outline: [
-        'bg-primary text-primary-on',
-        'hover:bg-primary-hover hover:text-secondary-on hover:border-border-hover',
-        'border border-border'
-      ],
-      ghost: ['text-primary-on bg-primary', 'hover:bg-primary-hover hover:text-secondary-on'],
-      unstyled: ['text-primary-on', 'hover:text-secondary-on']
+      solid: {
+        backgroundColor: '$vibrant',
+        color: '$on_vibrant',
+
+        '&:hover': {
+          backgroundColor: '$vibrant_hover',
+          color: '$on_vibrant_hover'
+        }
+      },
+
+      off: {
+        backgroundColor: '$container',
+        color: '$on_container',
+
+        '&:hover': {
+          backgroundColor: '$container_hover',
+          color: '$on_container_hover'
+        }
+      },
+
+      outlined: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        borderWidth: '$default',
+        borderColor: '$border',
+        borderStyle: 'solid',
+
+        '&:hover': {
+          backgroundColor: '$background_hover',
+          color: '$on_background_hover',
+          borderColor: '$border_hover'
+        }
+      },
+
+      ghost: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        '&:hover': {
+          backgroundColor: '$background_hover',
+          color: '$on_background_hover'
+        }
+      },
+
+      text: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        '&:hover': {
+          color: '$on_background_hover'
+        }
+      }
     },
-    transparent: {
-      true: '',
-      false: ''
-    },
+
     size: {
-      default: ['h-10', 'px-5 py-1.5'],
-      sm: ['px-3 py-0.5', 'h-8'],
-      lg: ['px-6 py-1.5', 'h-12'],
-      icon: ['h-10 w-10', 'p-2']
+      default: {
+        paddingX: '$4',
+        paddingY: '$1'
+      },
+
+      sm: {
+        paddingX: '$2',
+        paddingY: '$05'
+      },
+
+      lg: {
+        paddingX: '$5',
+        paddingY: '$150'
+      },
+
+      round: {
+        height: '$10',
+        width: '$10',
+
+        paddingX: '$2',
+        paddingY: '$2',
+
+        borderRadius: '$full'
+      }
     }
-  },
-  compoundVariants: [
-    {
-      variant: ['outline', 'ghost'],
-      transparent: true,
-      className: 'bg-transparent'
-    }
-  ],
-  defaultVariants: {
-    variant: 'solid',
-    transparent: false,
-    size: 'default'
   }
 })
 
-export const Button = forwardRef<ButtonRef, ButtonProps>(
-  (opts: ButtonProps, ref: Ref<ButtonRef>) => {
-    const { options } = useOptions()
+export const Button: React.FC<ButtonProps> = (buttonProps: ButtonProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
-    const { all, Button }: Components = options.extend.components
+  const {
+    children,
+    asChild,
+    className,
+    variant = 'solid',
+    size = 'default',
+    ...restProps
+  }: ButtonProps = { ...components.all, ...components?.Button, ...buttonProps }
 
-    const {
-      children,
-      asChild,
-      className,
-      color = 'accent1',
-      disabled = opts.disabled || opts.loading,
-      loading,
-      loader = <LoaderCircle />,
-      loaderPosition = 'left',
-      variant,
-      transparent,
-      size,
-      ...restOpts
-    }: ButtonProps = { ...all, ...Button, ...opts }
+  const props: ButtonProps = {
+    className: cn(
+      buttonStyles({ variant, size }),
+      components?.all?.className,
+      components?.Button?.className,
+      className
+    ),
 
-    const props: ButtonProps = {
-      ...restOpts,
-      ref,
-      color,
-      disabled,
-      className: buttonStyles({
-        variant,
-        transparent,
-        size,
-        className: [all?.className, Button?.className, className]
-      })
-    }
-
-    if (children && asChild) {
-      if (!isValidElement(children)) {
-        throw new Error('Invalid children on Button!')
-      }
-
-      if (Children.count(children) > 1) {
-        console.warn(
-          'More than one children on Button when `asChild` is true! Selecting the first one.'
-        )
-      }
-
-      const _children: ReactElement = (
-        Children.count(children) > 1 ? Children.toArray(children)[0] : children
-      ) as ReactElement
-
-      return cloneElement(_children, {
-        ...props,
-        ..._children.props
-      })
-    }
-
-    return (
-      <button {...props}>
-        {loading && loaderPosition === 'left' && (
-          <div className="mr-1.5 animate-spin">{loader}</div>
-        )}
-        {children}
-        {loading && loaderPosition === 'right' && (
-          <div className="ml-1.5 animate-spin">{loader}</div>
-        )}
-      </button>
-    )
+    ...restProps
   }
-)
+
+  if (children && asChild) {
+    if (!isValidElement(children)) {
+      throw new Error('Invalid children on Button!')
+    }
+
+    if (Children.count(children) > 1) {
+      console.warn(
+        'More than one children on Button when `asChild` is true! Selecting the first one.'
+      )
+    }
+
+    const _children: ReactElement = (
+      Children.count(children) > 1 ? Children.toArray(children)[0] : children
+    ) as ReactElement
+
+    return cloneElement(_children, {
+      ...props,
+      ..._children.props
+    })
+  }
+
+  return <button {...props}>{children}</button>
+}
 Button.displayName = 'Button'

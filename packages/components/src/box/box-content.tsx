@@ -1,62 +1,65 @@
 'use client'
 
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type ReactNode,
-  type Ref
-} from 'react'
+import React, { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cx, useOptions, type Components } from '@axolotl-ui/core'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { BoxContentProps, BoxContentRef } from '@/box/types'
+import type { BoxProps } from '@/box/types'
 
-export const BoxContent = forwardRef<BoxContentRef, BoxContentProps>(
-  (opts: BoxContentProps, ref: Ref<BoxContentRef>): ReactNode => {
-    const { options } = useOptions()
+const boxContentStyles = css({
+  borderRadius: '$2xl',
 
-    const { all, BoxContent }: Components = options.extend.components
+  paddingX: '$5',
+  paddingY: '$3'
+})
 
-    const {
-      children,
-      asChild,
-      className,
-      color = 'accent1',
-      ...restOpts
-    }: BoxContentProps = { ...all, ...BoxContent, ...opts }
+export const BoxContent: React.FC<BoxProps> = (boxContentProps: BoxProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
-    const props: BoxContentProps = {
-      ...restOpts,
-      ref,
-      color,
-      className: cx('px-4 py-1', all?.className, BoxContent?.className, className)
-    }
-
-    if (children && asChild) {
-      if (!isValidElement(children)) {
-        throw new Error('Invalid children on BoxContent!')
-      }
-
-      if (Children.count(children) > 1) {
-        console.warn(
-          'More than one children on BoxContent when `asChild` is true! Selecting the first one.'
-        )
-      }
-
-      const _children: ReactElement = (
-        Children.count(children) > 1 ? Children.toArray(children)[0] : children
-      ) as ReactElement
-
-      return cloneElement(_children, {
-        ...props,
-        ..._children.props
-      })
-    }
-
-    return <div {...props}>{children}</div>
+  const {
+    children,
+    asChild,
+    className,
+    variant = 'solid',
+    ...restProps
+  }: BoxProps = {
+    ...components.all,
+    ...components?.BoxContent,
+    ...boxContentProps
   }
-)
-BoxContent.displayName = 'BoxContent'
+
+  const props: BoxProps = {
+    className: cn(
+      boxContentStyles(),
+      components?.all?.className,
+      components?.BoxContent?.className,
+      className
+    ),
+
+    ...restProps
+  }
+
+  if (children && asChild) {
+    if (!isValidElement(children)) {
+      throw new Error('Invalid children on BoxContent!')
+    }
+
+    if (Children.count(children) > 1) {
+      console.warn('More than one children on Box when `asChild` is true! Selecting the first one.')
+    }
+
+    const _children: ReactElement = (
+      Children.count(children) > 1 ? Children.toArray(children)[0] : children
+    ) as ReactElement
+
+    return cloneElement(_children, {
+      ...props,
+      ..._children.props
+    })
+  }
+
+  return <div {...props}>{children}</div>
+}
+BoxContent.displayName = 'Box'

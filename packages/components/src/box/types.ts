@@ -1,22 +1,28 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { GlobalProps } from '@/types'
-import type { BoxStyles } from '@/box/box'
+import type { GlobalComponentProps } from '@/types'
+
+export type BoxStyeProps = {
+  variant?: 'solid' | 'outlined'
+}
 
 export type BoxRef = HTMLDivElement
 export type BoxProps = {
   children?: ReactNode
   asChild?: boolean
-} & GlobalProps &
-  ComponentProps<'div'> &
-  BoxStyles
+} & BoxStyeProps &
+  GlobalComponentProps &
+  ComponentProps<'div'>
 
-export type BoxContentRef = BoxRef
-export type BoxContentProps = BoxProps
+export type BoxContentProps = {
+  children?: ReactNode
+  asChild?: boolean
+} & GlobalComponentProps &
+  ComponentProps<'div'>
 
 declare module '@axolotl-ui/core' {
   export interface Components {
-    Box: BoxProps
-    BoxContent: BoxContentProps
+    Box?: BoxProps
+    BoxContent?: BoxContentProps
   }
 }

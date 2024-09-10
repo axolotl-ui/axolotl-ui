@@ -1,82 +1,94 @@
 'use client'
 
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type Ref
-} from 'react'
+import type React from 'react'
+import { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { BadgeProps, BadgeRef } from '@/badge/types'
+import type { BadgeProps } from '@/badge/types'
 
-export type BadgeStyles = VariantProps<typeof badgeStyles>
+const badgeStyles = css({
+  display: 'flex',
 
-export const badgeStyles = cva({
-  base: ['rounded-full', 'transition-all duration-300'],
+  justifyContent: 'center',
+  alignItems: 'center',
+
+  transitionProperty: 'color, background-color, border-color',
+  transitionDuration: '300ms',
+  transitionTimingFunction: 'ease-in-out',
+
+  borderRadius: '$full',
+
+  padding: '$05',
+
   variants: {
     variant: {
-      solid: 'bg-bright',
-      off: 'bg-secondary',
-      outline: ['bg-primary', 'border border-border']
+      solid: {
+        backgroundColor: '$vibrant',
+        color: '$on_vibrant'
+      },
+
+      off: {
+        backgroundColor: '$container',
+        color: '$on_container'
+      },
+
+      outlined: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        borderWidth: '$default',
+        borderColor: '$border',
+        borderStyle: 'solid'
+      }
     },
+
     size: {
-      default: 'h-2 w-2 max-w-4',
-      sm: 'h-1 w-1 max-w-2',
-      lg: 'h-3 w-3 max-w-6'
-    },
-    transparent: {
-      true: '',
-      false: ''
+      default: {
+        height: '$3',
+        width: '$3',
+
+        fontSize: '$xs'
+      },
+
+      sm: {
+        height: '$2',
+        width: '$2'
+      },
+
+      lg: {
+        height: '$4',
+        width: '$4',
+
+        fontSize: '$sm'
+      }
     }
-  },
-  compoundVariants: [
-    {
-      variant: 'outline',
-      transparent: true,
-      className: 'bg-transparent'
-    }
-  ],
-  defaultVariants: {
-    variant: 'solid',
-    size: 'default',
-    transparent: false
   }
 })
 
-export const Badge = forwardRef<BadgeRef, BadgeProps>((opts: BadgeProps, ref: Ref<BadgeRef>) => {
-  const { options } = useOptions()
-
-  const { all, Badge }: Components = options.extend.components
+export const Badge: React.FC<BadgeProps> = (badgeProps: BadgeProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
   const {
     children,
     asChild,
     className,
-    color = 'accent1',
-    variant,
-    size,
-    transparent,
-    ...restOpts
-  }: BadgeProps = {
-    ...all,
-    ...Badge,
-    ...opts
-  }
+    variant = 'solid',
+    size = 'default',
+    ...restProps
+  }: BadgeProps = { ...components.all, ...components?.Badge, ...badgeProps }
 
   const props: BadgeProps = {
-    ...restOpts,
-    ref,
-    color,
-    className: badgeStyles({
-      variant,
-      size,
-      transparent,
-      className: [all?.className, Badge?.className, className]
-    })
+    className: cn(
+      badgeStyles({ variant, size }),
+      components?.all?.className,
+      components?.Badge?.className,
+      className
+    ),
+
+    ...restProps
   }
 
   if (children && asChild) {
@@ -101,5 +113,5 @@ export const Badge = forwardRef<BadgeRef, BadgeProps>((opts: BadgeProps, ref: Re
   }
 
   return <span {...props}>{children}</span>
-})
+}
 Badge.displayName = 'Badge'

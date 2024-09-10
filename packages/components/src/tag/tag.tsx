@@ -1,84 +1,92 @@
 'use client'
 
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  type ReactElement,
-  type Ref
-} from 'react'
+import type React from 'react'
+import { Children, cloneElement, isValidElement, type ReactElement } from 'react'
 
-import { cva, useOptions, type Components, type VariantProps } from '@axolotl-ui/core'
+import { css, cn, useOptions } from '@axolotl-ui/core'
 
-import type { TagProps, TagRef } from '@/tag/types'
+import type { TagProps } from '@/tag/types'
 
-export type TagStyles = VariantProps<typeof tagStyles>
+const tagStyles = css({
+  display: 'flex',
 
-export const tagStyles = cva({
-  base: [
-    'font-medium',
-    'w-fit',
-    'flex items-center justify-center',
-    'transition-all duration-300',
-    'rounded-sm'
-  ],
+  justifyContent: 'center',
+  alignItems: 'center',
+
+  transitionProperty: 'color, background-color, border-color',
+  transitionDuration: '300ms',
+  transitionTimingFunction: 'ease-in-out',
+
+  width: 'fit-content',
+
+  borderRadius: '$xl',
+
+  fontWeight: '$bold',
+
   variants: {
     variant: {
-      solid: 'bg-bright text-bright-on',
-      off: 'bg-secondary text-secondary-on',
-      outline: ['bg-primary text-primary-on', 'border border-border']
+      solid: {
+        backgroundColor: '$vibrant',
+        color: '$on_vibrant'
+      },
+
+      off: {
+        backgroundColor: '$container',
+        color: '$on_container'
+      },
+
+      outlined: {
+        backgroundColor: 'transparent',
+        color: '$on_background',
+
+        borderWidth: '$default',
+        borderColor: '$border',
+        borderStyle: 'solid'
+      }
     },
+
     size: {
-      default: ['h-6', 'px-2 py-1', 'text-sm'],
-      sm: ['h-5', 'px-1.5 py-0.5', 'text-sm'],
-      lg: ['h-8', 'px-3 py-1.5', 'text-base']
-    },
-    transparent: {
-      true: '',
-      false: ''
+      default: {
+        paddingY: '$1',
+        paddingX: '$3'
+      },
+
+      sm: {
+        paddingY: '$05',
+        paddingX: '$2'
+      },
+
+      lg: {
+        paddingY: '$150',
+        paddingX: '$5'
+      }
     }
-  },
-  compoundVariants: [
-    {
-      variant: 'outline',
-      transparent: true,
-      className: 'bg-transparent'
-    }
-  ],
-  defaultVariants: {
-    variant: 'solid',
-    size: 'default',
-    transparent: false
   }
 })
 
-export const Tag = forwardRef<TagRef, TagProps>((opts: TagProps, ref: Ref<TagRef>) => {
-  const { options } = useOptions()
-
-  const { all, Tag }: Components = options.extend.components
+export const Tag: React.FC<TagProps> = (tagProps: TagProps): React.ReactNode => {
+  const {
+    options: { components }
+  } = useOptions()
 
   const {
     children,
     asChild,
     className,
-    color = 'accent1',
-    variant,
-    size,
-    transparent,
-    ...restOpts
-  }: TagProps = { ...all, ...Tag, ...opts }
+    variant = 'solid',
+    size = 'default',
+    ...restProps
+  }: TagProps = { ...components.all, ...components?.Tag, ...tagProps }
 
   const props: TagProps = {
-    ...restOpts,
-    ref,
-    color,
-    className: tagStyles({
-      variant,
-      size,
-      transparent,
-      className: [all?.className, Tag?.className, className]
-    })
+    className: cn(
+      tagStyles({ variant, size }),
+      components?.all?.className,
+      components?.Tag?.className,
+      className
+    ),
+
+    ...restProps
   }
 
   if (children && asChild) {
@@ -101,5 +109,5 @@ export const Tag = forwardRef<TagRef, TagProps>((opts: TagProps, ref: Ref<TagRef
   }
 
   return <span {...props}>{children}</span>
-})
+}
 Tag.displayName = 'Tag'
